@@ -10,17 +10,23 @@ from datetime import datetime, timedelta
 import asyncio
 import emoji
 
+from Queue import Queue
+
 # os.system('python generate_time_images.py')
 
 client = TelegramClient('Session', api_id, api_hash)
 client.start()
 
 current_photo = ''
-time_to_reaction = 30
+time_to_reaction = 10
 next_date = datetime(1800, 1, 1)
 
 online_photo = f"{path}photos/robot_default.png"
 offline_photo = f"{path}photos/robot_dead.png"
+
+isPhotoProccessRunning = False
+
+queue = Queue()
 
 photos = {
     '👍': f"{path}photos/robot_fun.png",
@@ -55,10 +61,21 @@ photos = {
 def isCanChangePhoto(path):
     return current_photo != path
 
-async def changePhoto(path):
-    if not isCanChangePhoto(path):
+async def changePhoto():
+    global isPhotoProccessRunning
+    global next_date
+
+    if isPhotoProccessRunning:
         return False
 
+    isPhotoProccessRunning = True
+    path = queue.get_elem()
+    if not isCanChangePhoto(path):
+        queue.remove_elem()
+        isPhotoProccessRunning = False
+        return False
+
+    # print(path, datetime.now())
     while datetime.now() < next_date:
         await asyncio.sleep(1)
 
@@ -66,35 +83,54 @@ async def changePhoto(path):
     file = await client.upload_file(path)
     await client(UploadProfilePhotoRequest(file))
     current_photo = path
+    queue.remove_elem()
+    
+    if path != offline_photo and path != online_photo:
+        next_date = datetime.now() + timedelta(seconds=time_to_reaction)
+
+    isPhotoProccessRunning = False
+
+    if queue.get_length() > 0:
+        await changePhoto()
 
 async def changePhotoReactions(reaction):
     photo = photos[reaction]
     if not isCanChangePhoto(photo):
         return False
 
-    await changePhoto(photo)
-    global next_date
-    next_date = datetime.now() + timedelta(seconds=time_to_reaction)
+    if queue.get_length() > 0 and (queue.get_elem(-1) == offline_photo or queue.get_elem(-1) == online_photo):
+        queue.insert(-1, photo)
+    else:
+        queue.push_back(photo)
+    await changePhoto()
 
 @client.on(events.Raw)
 async def handler(update):
     # print(update.stringify())
     if isinstance(update, types.UpdateEditChannelMessage):
-        if update.message.from_id == None or update.message.from_id.user_id == admin_id:
+        if update.message.from_id and update.message.from_id.user_id == admin_id:
             reaction = update.message.reactions.results[-1].reaction.encode("utf-8")
             await changePhotoReactions(reaction.decode('utf-8'))
     elif isinstance(update, types.UpdateEditMessage):
-        if update.message.from_id == None or update.message.from_id.user_id == admin_id:
+        if update.message.from_id and update.message.from_id.user_id == admin_id:
             reaction = update.message.reactions.results[-1].reaction.encode("utf-8")
             await changePhotoReactions(reaction.decode('utf-8'))
 
     elif isinstance(update, types.UpdateUserStatus):
         if update.user_id == admin_id:
             if isinstance(update.status, types.UserStatusOnline):
-                await changePhoto(online_photo)
+                if offline_photo in queue.get_queue():
+                    queue.replace(offline_photo, online_photo)
+                elif online_photo not in queue.get_queue():
+                    queue.push_back(online_photo)
+                await changePhoto()
                 # print(f"Went Online at : {datetime.now()}")
             elif isinstance(update.status, types.UserStatusOffline):
-                await changePhoto(offline_photo)
+                if online_photo in queue.get_queue():
+                    queue.replace(online_photo, offline_photo)
+                elif offline_photo not in queue.get_queue():
+                    queue.push_back(offline_photo)
+                await changePhoto()
                 # print(f"Was recently online at : {datetime.now()}")
 
 client.run_until_disconnected()
