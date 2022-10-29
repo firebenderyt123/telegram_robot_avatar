@@ -42,7 +42,7 @@ photos = {
     '🤔': f"{path}photos/robot_default.png", # думает
     '🤯': f"{path}photos/robot_shock.png", # сносит крышу
     '🤬': f"{path}photos/robot_angry.png", # красный злой с матами
-    '🎉': f"{path}photos/robot_fun.png",
+    '🎉': f"{path}photos/robot_congratulation.png",
     '🐳': f"{path}photos/robot_fun.png",
     '🤩': f"{path}photos/robot_fun.png", # звезды в глазах
     '🤮': f"{path}photos/robot_shit.png", # блевота
@@ -109,11 +109,12 @@ async def handler(update):
     # print(update.stringify())
     if isinstance(update, types.UpdateEditChannelMessage):
         if update.message.from_id and update.message.from_id.user_id == admin_id:
-            reaction = update.message.reactions.results[-1].reaction.encode("utf-8")
+            reaction = update.message.reactions.results[0].reaction.encode("utf-8")
             await changePhotoReactions(reaction.decode('utf-8'))
     elif isinstance(update, types.UpdateEditMessage):
+        print(update.message.reactions.results)
         if update.message.from_id and update.message.from_id.user_id == admin_id:
-            reaction = update.message.reactions.results[-1].reaction.encode("utf-8")
+            reaction = update.message.reactions.results[0].reaction.encode("utf-8")
             await changePhotoReactions(reaction.decode('utf-8'))
 
     elif isinstance(update, types.UpdateUserStatus):
