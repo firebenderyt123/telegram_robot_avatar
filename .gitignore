@@ -1,2 +1,3 @@
-Session.session
+*.session
 __pycache__
+/photos/*.psd

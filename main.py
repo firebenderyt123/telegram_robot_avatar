@@ -35,17 +35,17 @@ photos = {
     '\u2764': f"{path}photos/robot_love.png", # сердце
     '😢': f"{path}photos/robot_cry.png",
     '👎': f"{path}photos/robot_cry.png",
-    '🔥': f"{path}photos/robot_fun.png",
+    '🔥': f"{path}photos/robot_fire.png",
     '🥰': f"{path}photos/robot_love.png", # в сердечках
     '👏': f"{path}photos/robot_fun.png",
     '😁': f"{path}photos/robot_fun.png",
     '🤔': f"{path}photos/robot_default.png", # думает
-    '🤯': f"{path}photos/robot_shock.png", # сносит крышу
+    '🤯': f"{path}photos/robot_boom.png", # сносит крышу
     '🤬': f"{path}photos/robot_angry.png", # красный злой с матами
     '🎉': f"{path}photos/robot_congratulation.png",
-    '🐳': f"{path}photos/robot_fun.png",
-    '🤩': f"{path}photos/robot_fun.png", # звезды в глазах
-    '🤮': f"{path}photos/robot_shit.png", # блевота
+    '🐳': f"{path}photos/robot_water.png",
+    '🤩': f"{path}photos/robot_star.png", # звезды в глазах
+    '🤮': f"{path}photos/robot_foo.png", # блевота
     '💩': f"{path}photos/robot_shit.png",
     '🙏': f"{path}photos/robot_fun.png", # спасибо (руки)
     '🕊': f"{path}photos/robot_fun.png", # голубь мира
@@ -54,7 +54,7 @@ photos = {
     '🥴': f"{path}photos/robot_default.png", # пьяный
     '😍': f"{path}photos/robot_love.png",
     '❤️‍🔥': f"{path}photos/robot_love.png",
-    '🌚': f"{path}photos/robot_shock.png", # черная луна
+    '🌚': f"{path}photos/robot_dark_moon.png", # черная луна
     '🤣': f"{path}photos/robot_fun.png", # смех до слез на боку
 }
 
