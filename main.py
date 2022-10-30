@@ -29,7 +29,7 @@ isPhotoProccessRunning = False
 queue = Queue()
 
 photos = {
-    '👍': f"{path}photos/robot_fun.png",
+    '👍': f"{path}photos/robot_like.png",
     '👌': f"{path}photos/robot_fun.png",
     '😱': f"{path}photos/robot_shock.png",
     '\u2764': f"{path}photos/robot_love.png", # сердце
@@ -39,7 +39,7 @@ photos = {
     '🥰': f"{path}photos/robot_love.png", # в сердечках
     '👏': f"{path}photos/robot_fun.png",
     '😁': f"{path}photos/robot_fun.png",
-    '🤔': f"{path}photos/robot_default.png", # думает
+    '🤔': f"{path}photos/robot_thinking.png", # думает
     '🤯': f"{path}photos/robot_boom.png", # сносит крышу
     '🤬': f"{path}photos/robot_angry.png", # красный злой с матами
     '🎉': f"{path}photos/robot_congratulation.png",
@@ -49,9 +49,9 @@ photos = {
     '💩': f"{path}photos/robot_shit.png",
     '🙏': f"{path}photos/robot_fun.png", # спасибо (руки)
     '🕊': f"{path}photos/robot_fun.png", # голубь мира
-    '🤡': f"{path}photos/robot_fun.png", # клоун
-    '🥱': f"{path}photos/robot_default.png", # зевота
-    '🥴': f"{path}photos/robot_default.png", # пьяный
+    '🤡': f"{path}photos/robot_joker.png", # клоун
+    '🥱': f"{path}photos/robot_sleep.png", # зевота
+    '🥴': f"{path}photos/robot_beer.png", # пьяный
     '😍': f"{path}photos/robot_love.png",
     '❤️‍🔥': f"{path}photos/robot_love.png",
     '🌚': f"{path}photos/robot_dark_moon.png", # черная луна
