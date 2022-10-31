@@ -56,6 +56,12 @@ photos = {
     '❤️‍🔥': f"{path}photos/robot_love.png",
     '🌚': f"{path}photos/robot_dark_moon.png", # черная луна
     '🤣': f"{path}photos/robot_fun.png", # смех до слез на боку
+    '🌭': f"{path}photos/robot_hot_dog.png", # хот дог
+    '💯': f"{path}photos/robot_100.png",
+    '⚡️': f"{path}photos/robot_zap.png",
+    '🍌': f"{path}photos/robot_banana.png",
+    '🖕': f"{path}photos/robot_fuck.png", # fuck you
+    '😈': f"{path}photos/robot_chert.png",
 }
 
 def isCanChangePhoto(path):
