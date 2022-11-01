@@ -26,7 +26,11 @@ class Queue:
 		return len(self._queue)
 
 	def get_elem(self, pos = 0):
-		return self._queue[pos]
+		if pos < len(self._queue):
+			return self._queue[pos]
+		else:
+			return None
 
 	def remove_elem(self, pos = 0):
-		self._queue.pop(pos)
+		if pos < len(self._queue):
+			self._queue.pop(pos)

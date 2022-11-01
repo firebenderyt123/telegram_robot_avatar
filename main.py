@@ -58,14 +58,14 @@ photos = {
     '🤣': f"{path}photos/robot_fun.png", # смех до слез на боку
     '🌭': f"{path}photos/robot_hot_dog.png", # хот дог
     '💯': f"{path}photos/robot_100.png",
-    '⚡️': f"{path}photos/robot_zap.png",
+    '\u26a1': f"{path}photos/robot_zap.png", # zap
     '🍌': f"{path}photos/robot_banana.png",
     '🖕': f"{path}photos/robot_fuck.png", # fuck you
     '😈': f"{path}photos/robot_chert.png",
 }
 
 def isCanChangePhoto(path):
-    return current_photo != path
+    return current_photo != path and path != None
 
 async def changePhoto():
     global isPhotoProccessRunning
