@@ -24,6 +24,7 @@ next_date = datetime(1800, 1, 1)
 online_photo = f"{path}photos/robot_default.png"
 offline_photo = f"{path}photos/robot_dead.png"
 
+loggedIn = False
 isPhotoProccessRunning = False
 
 queue = Queue()
@@ -65,11 +66,12 @@ photos = {
 }
 
 def isCanChangePhoto(path):
-    return current_photo != path and path != None
+	global current_photo
+	return current_photo != path and path != None
 
 async def changePhoto():
-    global isPhotoProccessRunning
-    global next_date
+    global isPhotoProccessRunning, time_to_reaction
+    global next_date, loggedIn, current_photo
 
     if isPhotoProccessRunning:
         return False
@@ -91,16 +93,18 @@ async def changePhoto():
     current_photo = path
     queue.remove_elem()
     
-    if path != offline_photo and path != online_photo:
+    if current_photo != offline_photo and current_photo != online_photo:
         next_date = datetime.now() + timedelta(seconds=time_to_reaction)
 
     isPhotoProccessRunning = False
 
     if queue.get_length() > 0:
         await changePhoto()
-    elif path != offline_photo and path != online_photo:
-    	queue.push_back(offline_photo)
-    	await changePhoto()
+    elif current_photo != offline_photo and current_photo != online_photo:
+    	if loggedIn:
+    		await setOnline()
+    	else:
+    		await setOffline()
 
 async def changePhotoReactions(reaction):
     photo = photos[reaction]
@@ -112,6 +116,24 @@ async def changePhotoReactions(reaction):
     else:
         queue.push_back(photo)
     await changePhoto()
+
+async def setOnline():
+	global loggedIn
+	if offline_photo in queue.get_queue():
+		queue.replace(offline_photo, online_photo)
+	elif online_photo not in queue.get_queue():
+		queue.push_back(online_photo)
+	loggedIn = True
+	await changePhoto()
+
+async def setOffline():
+	global loggedIn
+	if online_photo in queue.get_queue():
+		queue.replace(online_photo, offline_photo)
+	elif offline_photo not in queue.get_queue():
+		queue.push_back(offline_photo)
+	loggedIn = False
+	await changePhoto()
 
 @client.on(events.Raw)
 async def handler(update):
@@ -129,18 +151,10 @@ async def handler(update):
     elif isinstance(update, types.UpdateUserStatus):
         if update.user_id == admin_id:
             if isinstance(update.status, types.UserStatusOnline):
-                if offline_photo in queue.get_queue():
-                    queue.replace(offline_photo, online_photo)
-                elif online_photo not in queue.get_queue():
-                    queue.push_back(online_photo)
-                await changePhoto()
+                await setOnline()
                 # print(f"Went Online at : {datetime.now()}")
             elif isinstance(update.status, types.UserStatusOffline):
-                if online_photo in queue.get_queue():
-                    queue.replace(online_photo, offline_photo)
-                elif offline_photo not in queue.get_queue():
-                    queue.push_back(offline_photo)
-                await changePhoto()
+                await setOffline()
                 # print(f"Was recently online at : {datetime.now()}")
 
 client.run_until_disconnected()
