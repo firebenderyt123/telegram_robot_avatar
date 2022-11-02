@@ -96,8 +96,10 @@ async def changePhoto():
 
     isPhotoProccessRunning = False
 
-    if queue.get_length() > 0 or path != offline_photo and path != online_photo:
+    if queue.get_length() > 0:
         await changePhoto()
+    elif path != offline_photo and path != online_photo:
+    	queue.push_back(offline_photo)
 
 async def changePhotoReactions(reaction):
     photo = photos[reaction]
