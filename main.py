@@ -100,6 +100,7 @@ async def changePhoto():
         await changePhoto()
     elif path != offline_photo and path != online_photo:
     	queue.push_back(offline_photo)
+    	await changePhoto()
 
 async def changePhotoReactions(reaction):
     photo = photos[reaction]
