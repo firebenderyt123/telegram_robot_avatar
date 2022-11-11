@@ -21,7 +21,7 @@ current_photo = ''
 time_to_reaction = 10
 next_date = datetime(1800, 1, 1)
 
-online_photo = f"{path}photos/robot_default.png"
+online_photo = f"{path}photos/robot_watermelon.png"
 offline_photo = f"{path}photos/robot_dead.png"
 
 loggedIn = False
